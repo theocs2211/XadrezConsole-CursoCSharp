@@ -1,7 +1,7 @@
 ﻿using System;
-using XadrezConsole.Tabuleiro;
+using XadrezConsole.tabuleiro;
 
-namespace xadrezConsole
+namespace XadrezConsole
 {
     class Program
     {
@@ -9,6 +9,7 @@ namespace xadrezConsole
         {
             Tabuleiro tab = new Tabuleiro(8, 8);
 
+            Tela.ImprimirTabuleiro(tab);
         }
     }
 }
