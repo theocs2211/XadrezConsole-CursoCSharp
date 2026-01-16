@@ -12,5 +12,11 @@
             Colunas = colunas;
             Pecas = new Peca[Linhas, Colunas];
         }
+
+        public void AdicionarPeca(Peca p, Posicao pos)
+        {
+            Pecas[pos.Linha, pos.Coluna] = p;
+            p.Pos = pos;
+        }
     }
 }
