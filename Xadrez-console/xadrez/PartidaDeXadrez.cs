@@ -67,9 +67,15 @@ namespace XadrezConsole.xadrez
             {
                 xeque = false;
             }
-
-            Turno++;
-            MudaJogador();
+            if (EstaEmXequeMate(Adversaria(JogadorAtual)))
+            {
+                Terminada = true;
+            }
+            else
+            {
+                Turno++;
+                MudaJogador();
+            }
         }
 
         public void ValidarPosicaoDeOrigem(Posicao pos)
@@ -171,6 +177,37 @@ namespace XadrezConsole.xadrez
             return false;
         }
 
+        public bool EstaEmXequeMate(Cor cor)
+        {
+            if (!EstaEmXeque(cor)) 
+            { 
+                return false; 
+            }
+            foreach (Peca p in PecasEmJogo(cor))
+            {
+                bool[,] mat = p.MovimentosPossiveis();
+                for (int i = 0; i < Tab.Linhas; i++)
+                {
+                    for (int j = 0; j < Tab.Colunas; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = p.Pos;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = ExecutarMovimento(origem, destino);
+                            bool testeXeque = EstaEmXeque(cor);
+                            DesfazMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public void AdicionarNovaPeca(char coluna, int linha, Peca peca)
         {
             Tab.AdicionarPeca(peca, new PosicaoXadrez(coluna, linha).ToPosicao());
@@ -179,6 +216,7 @@ namespace XadrezConsole.xadrez
 
         private void AdicionarPecas()
         {
+            /*
             AdicionarNovaPeca('c', 1, new Torre(Cor.Branca, Tab));
             AdicionarNovaPeca('c', 2, new Torre(Cor.Branca, Tab));
             AdicionarNovaPeca('d', 2, new Torre(Cor.Branca, Tab));
@@ -192,6 +230,13 @@ namespace XadrezConsole.xadrez
             AdicionarNovaPeca('e', 7, new Torre(Cor.Preta, Tab));
             AdicionarNovaPeca('e', 8, new Torre(Cor.Preta, Tab));
             AdicionarNovaPeca('d', 8, new Rei(Cor.Preta, Tab));
+            */
+            AdicionarNovaPeca('c', 1, new Torre(Cor.Branca, Tab));
+            AdicionarNovaPeca('d', 1, new Rei(Cor.Branca, Tab));
+            AdicionarNovaPeca('h', 7, new Torre(Cor.Branca, Tab));
+
+            AdicionarNovaPeca('b', 8, new Torre(Cor.Preta, Tab));
+            AdicionarNovaPeca('a', 8, new Rei(Cor.Preta, Tab));
         }
     }
 }
