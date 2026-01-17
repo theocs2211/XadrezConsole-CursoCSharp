@@ -54,12 +54,11 @@ namespace XadrezConsole.tabuleiro
             }
             else
             {
-                //throw new TabuleiroException("Não existe nenhuma peça nesta posição!");
                 return null;
             }
         }
 
-        private bool PosicaoValida(Posicao pos)
+        public bool PosicaoValida(Posicao pos)
         {
             if (pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)
             {

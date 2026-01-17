@@ -1,6 +1,6 @@
 ﻿namespace XadrezConsole.tabuleiro
 {
-    internal class Peca
+    abstract class Peca
     {
         public Posicao Pos { get; set; }
         public Cor Cor { get; protected set; }
@@ -15,9 +15,17 @@
             QteMovimentos = 0;
         }
 
+        public abstract bool[,] MovimentosPosiveis();
+
         public void IncrementarQteMovimentos()
         {
             QteMovimentos++;
+        }
+
+        protected bool PodeMover(Posicao pos)
+        {
+            Peca p = Tab.Peca(pos);
+            return p == null || p.Cor != Cor;
         }
     }
 }
