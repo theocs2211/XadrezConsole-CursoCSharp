@@ -13,6 +13,7 @@
             Cor = cor;
             Tab = tab;
             QteMovimentos = 0;
+
         }
 
         public abstract bool[,] MovimentosPosiveis();

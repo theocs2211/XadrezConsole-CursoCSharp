@@ -40,6 +40,48 @@ namespace XadrezConsole
              Console.WriteLine("  a b c d e f g h");
          }
 
+        public static void ImprimirPartida(PartidaDeXadrez partida)
+        {
+            ImprimirTabuleiro(partida.Tab);
+            Console.WriteLine();
+            ImprimirPecasCapturadas(partida);
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.Turno);
+            Console.WriteLine("Aguardando jogada: " + partida.JogardorAtual);
+        }
+        public static void ImprimirPartida(PartidaDeXadrez partida, bool[,] posicoesPossiveis)
+        {
+            ImprimirTabuleiro(partida.Tab, posicoesPossiveis);
+            Console.WriteLine();
+            ImprimirPecasCapturadas(partida);
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.Turno);
+            Console.WriteLine("Aguardando jogada: " + partida.JogardorAtual);
+        }
+
+        public static void ImprimirPecasCapturadas(PartidaDeXadrez partida)
+        {
+            Console.WriteLine("Peças capturadas:");
+            Console.Write("Brancas:");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Branca));
+            Console.WriteLine();
+            Console.Write("Pretas:");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Preta));
+            Console.WriteLine();
+        }
+
+        public static void ImprimirConjunto(HashSet<Peca> conjunto)
+        {
+            Console.Write("[");
+            foreach (Peca p in conjunto)
+            {
+                if (p.Cor == Cor.Preta) {Console.ForegroundColor = ConsoleColor.DarkYellow;}
+                Console.Write(p + " "); 
+            }
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("] ");
+        }
+
         public static PosicaoXadrez LerPosicaoXadrez()
         {
             string s = Console.ReadLine();
