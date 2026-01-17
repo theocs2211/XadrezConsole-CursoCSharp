@@ -43,6 +43,22 @@ namespace XadrezConsole.tabuleiro
             }
         }
 
+        public Peca RemoverPeca(Posicao pos)
+        {
+            if (ExistePeca(pos))
+            {
+                Peca p = Pecas[pos.Linha, pos.Coluna];
+                Pecas[pos.Linha, pos.Coluna] = null;
+                p.Pos = null;
+                return p;
+            }
+            else
+            {
+                //throw new TabuleiroException("Não existe nenhuma peça nesta posição!");
+                return null;
+            }
+        }
+
         private bool PosicaoValida(Posicao pos)
         {
             if (pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)
