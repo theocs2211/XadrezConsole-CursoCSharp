@@ -13,7 +13,7 @@ namespace XadrezConsole.xadrez
             return "T";
         }
 
-        public override bool[,] MovimentosPosiveis()
+        public override bool[,] MovimentosPossiveis()
         {
             bool[,] mat = new bool[Tab.Linhas, Tab.Colunas];
 

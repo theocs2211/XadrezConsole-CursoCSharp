@@ -14,30 +14,38 @@ namespace XadrezConsole
 
                 while (!partida.Terminada)
                 {
-                    Console.Clear();
-                    Tela.ImprimirPartida(partida);
+                    try
+                    {
+                        Console.Clear();
+                        Tela.ImprimirPartida(partida);
 
-                    Console.WriteLine();
-                    Console.Write("Origem: ");
-                    Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
-                    partida.ValidarPosicaoDeOrigem(origem);
+                        Console.WriteLine();
+                        Console.Write("Origem: ");
+                        Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+                        partida.ValidarPosicaoDeOrigem(origem);
 
-                    bool[,] posicoesPossiveis = partida.Tab.Peca(origem).MovimentosPosiveis();
+                        bool[,] posicoesPossiveis = partida.Tab.Peca(origem).MovimentosPossiveis();
 
-                    Console.Clear();
-                    Tela.ImprimirPartida(partida, posicoesPossiveis);
+                        Console.Clear();
+                        Tela.ImprimirPartida(partida, posicoesPossiveis);
 
-                    Console.WriteLine();
-                    Console.Write("Destino: ");
-                    Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
-                    partida.ValidarPosicaoDeDestino(origem, destino);
+                        Console.WriteLine();
+                        Console.Write("Destino: ");
+                        Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+                        partida.ValidarPosicaoDeDestino(origem, destino);
 
-                    partida.RealizaJogada(origem, destino);
+                        partida.RealizaJogada(origem, destino);
+                    }
+                    catch(TabuleiroException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadKey();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); 
+                Console.WriteLine("Erro inesperado: " + ex.Message); 
             }
         }
     }

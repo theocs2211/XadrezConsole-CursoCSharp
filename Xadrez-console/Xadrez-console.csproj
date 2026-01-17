@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="xadrez\hfhf2rid.1hx~" />
+  </ItemGroup>
+
 </Project>

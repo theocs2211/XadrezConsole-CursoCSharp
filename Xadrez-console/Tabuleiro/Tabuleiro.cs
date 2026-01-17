@@ -1,6 +1,4 @@
-﻿using XadrezConsole.tabuleiro;
-
-namespace XadrezConsole.tabuleiro
+﻿namespace XadrezConsole.tabuleiro
 {
     internal class Tabuleiro
     {
@@ -45,17 +43,14 @@ namespace XadrezConsole.tabuleiro
 
         public Peca RemoverPeca(Posicao pos)
         {
-            if (ExistePeca(pos))
-            {
-                Peca p = Pecas[pos.Linha, pos.Coluna];
-                Pecas[pos.Linha, pos.Coluna] = null;
-                p.Pos = null;
-                return p;
-            }
-            else
+            if (Peca(pos) == null)
             {
                 return null;
             }
+            Peca aux = Peca(pos);
+            aux.Pos = null;
+            Pecas[pos.Linha, pos.Coluna] = null;
+            return aux;
         }
 
         public bool PosicaoValida(Posicao pos)

@@ -16,16 +16,21 @@
 
         }
 
-        public abstract bool[,] MovimentosPosiveis();
+        public abstract bool[,] MovimentosPossiveis();
 
         public void IncrementarQteMovimentos()
         {
             QteMovimentos++;
         }
 
+        public void DecrementarQteMovimentos()
+        {
+            QteMovimentos--; 
+        }
+
         public bool ExisteMovimentosPossiveis()
         {
-            bool[,] mat = MovimentosPosiveis();
+            bool[,] mat = MovimentosPossiveis();
             for (int i = 0; i < Tab.Linhas; i++)
             {
                 for (int j = 0; j < Tab.Colunas; j++)
@@ -41,7 +46,7 @@
 
         public bool PodeMoverPara(Posicao pos)
         {
-            return MovimentosPosiveis()[pos.Linha, pos.Coluna];
+            return MovimentosPossiveis()[pos.Linha, pos.Coluna];
         }
 
         protected bool PodeMover(Posicao pos)
