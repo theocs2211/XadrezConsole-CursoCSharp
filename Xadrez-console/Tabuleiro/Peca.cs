@@ -22,6 +22,27 @@
             QteMovimentos++;
         }
 
+        public bool ExisteMovimentosPossiveis()
+        {
+            bool[,] mat = MovimentosPosiveis();
+            for (int i = 0; i < Tab.Linhas; i++)
+            {
+                for (int j = 0; j < Tab.Colunas; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool PodeMoverPara(Posicao pos)
+        {
+            return MovimentosPosiveis()[pos.Linha, pos.Coluna];
+        }
+
         protected bool PodeMover(Posicao pos)
         {
             Peca p = Tab.Peca(pos);
