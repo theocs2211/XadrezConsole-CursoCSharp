@@ -40,6 +40,7 @@ namespace XadrezConsole
                     {
                         Console.WriteLine(ex.Message);
                         Console.ReadKey();
+
                     }
                 }
                 Console.Clear();
