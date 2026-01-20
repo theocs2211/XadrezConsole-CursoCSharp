@@ -42,6 +42,11 @@ namespace XadrezConsole
                         Console.ReadKey();
 
                     }
+                    catch(IndexOutOfRangeException)
+                    {
+                        Console.WriteLine("Posição invalida!");
+                        Console.ReadKey();
+                    }
                 }
                 Console.Clear();
                 Tela.ImprimirPartida(partida);
