@@ -1,5 +1,4 @@
-﻿using System;
-using XadrezConsole.tabuleiro;
+﻿using XadrezConsole.tabuleiro;
 using XadrezConsole.xadrez;
 
 namespace XadrezConsole
@@ -35,6 +34,16 @@ namespace XadrezConsole
                         partida.ValidarPosicaoDeDestino(origem, destino);
 
                         partida.RealizaJogada(origem, destino);
+
+                        if (partida.PecaPromovida != null)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Peão promovido! Escolha a peça para promoção:");
+                            Console.WriteLine("[D] Dama  [T] Torre  [B] Bispo  [C] Cavalo");
+                            Console.Write("Opção: ");
+                            char T = char.Parse(Console.ReadLine());
+                            partida.PromoverPeca(T);
+                        }
                     }
                     catch(TabuleiroException ex)
                     {

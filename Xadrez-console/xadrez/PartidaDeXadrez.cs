@@ -12,6 +12,7 @@ namespace XadrezConsole.xadrez
         private HashSet<Peca> Capturadas;
         public bool xeque;
         public Peca VulneravelElPassant { get; private set; }
+        public Peca PecaPromovida { get; set; }
 
 
         public PartidaDeXadrez()
@@ -22,6 +23,7 @@ namespace XadrezConsole.xadrez
             Terminada = false;
             xeque = false;
             VulneravelElPassant = null;
+            PecaPromovida = null;
             Pecas = new HashSet<Peca>();
             Capturadas = new HashSet<Peca>();
             AdicionarPecas();
@@ -147,11 +149,7 @@ namespace XadrezConsole.xadrez
             {
                 if (p.Cor == Cor.Branca && destino.Linha == 0 || p.Cor == Cor.Preta && destino.Linha == 7)
                 {
-                    p = Tab.RemoverPeca(destino);
-                    Pecas.Remove(p);
-                    Peca dama = new Dama(p.Cor, Tab);
-                    Tab.AdicionarPeca(dama, destino);
-                    Pecas.Add(dama);
+                    PecaPromovida = p;
                 }
             }
 
@@ -312,6 +310,39 @@ namespace XadrezConsole.xadrez
                 }
             }
             return true;
+        }
+
+        public void PromoverPeca(char promoverPecaPara)
+        {
+            Peca p = PecaPromovida;
+            Posicao aux = p.Pos;
+            Peca peca;
+
+            Tab.RemoverPeca(aux);
+            Pecas.Remove(p);
+            if (promoverPecaPara == 'D' || promoverPecaPara == 'd')
+            {
+                peca = new Dama(p.Cor, Tab);
+            }
+            else if (promoverPecaPara == 'T' || promoverPecaPara == 't')
+            {
+                peca = new Torre(p.Cor, Tab);
+            }
+            else if (promoverPecaPara == 'B' || promoverPecaPara == 'b')
+            {
+                peca = new Bispo(p.Cor, Tab);
+            }
+            else if (promoverPecaPara == 'C' || promoverPecaPara == 'c')
+            {
+                peca = new Cavalo(p.Cor, Tab);
+            }
+            else
+            {
+                throw new TabuleiroException("Peça invalida!");
+            }
+            Tab.AdicionarPeca(peca, aux);
+            Pecas.Add(peca);
+            PecaPromovida = null;
         }
 
         public void AdicionarNovaPeca(char coluna, int linha, Peca peca)
