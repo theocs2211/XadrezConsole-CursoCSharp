@@ -8,6 +8,8 @@ namespace XadrezConsole.xadrez
         public int Turno { get; private set; }
         public Cor JogadorAtual { get; private set; }
         public bool Terminada { get; private set; }
+        public bool XequeMate { get; private set; }
+        public bool Empate { get; private set; }
         private HashSet<Peca> Pecas;
         private HashSet<Peca> Capturadas;
         public bool xeque;
@@ -21,6 +23,7 @@ namespace XadrezConsole.xadrez
             Turno = 1;
             JogadorAtual = Cor.Branca;
             Terminada = false;
+            XequeMate = false;
             xeque = false;
             VulneravelElPassant = null;
             PecaPromovida = null;
@@ -161,9 +164,15 @@ namespace XadrezConsole.xadrez
             {
                 xeque = false;
             }
-            if (EstaEmXequeMate(Adversaria(JogadorAtual)))
+            if (EstaEmpatado())
             {
                 Terminada = true;
+                Empate = true;
+            }
+            else if (EstaEmXequeMate(Adversaria(JogadorAtual)))
+            {
+                Terminada = true;
+                XequeMate = true;
             }
             else
             {
@@ -312,6 +321,117 @@ namespace XadrezConsole.xadrez
             return true;
         }
 
+        public bool EstaEmpatado()
+        {
+            //Material insuficiente
+            HashSet<Peca> pecasEmJogo = PecasEmJogo(Cor.Branca);
+            pecasEmJogo.UnionWith(PecasEmJogo(Cor.Preta));
+            //Rei vs Rei
+            if (pecasEmJogo.Count == 2)
+            {
+                return true;
+            }
+            //Rei vs Rei + Cavalo ou Rei vs Rei + Bispo
+            else if (pecasEmJogo.Count == 3)
+            {
+                int aux = 0;
+                foreach (Peca p in pecasEmJogo)
+                {
+                    if (p is Rei)
+                    {
+                        aux++;
+                    }
+                    if (p is Cavalo || p is Bispo)
+                    {
+                        aux++;
+                    }
+                }
+                return aux == 3;
+            }
+            //Rei + Bispo vs Rei + Bispo    Os dois bispos tem que ser da mesma cor
+            else if (pecasEmJogo.Count == 4 && PecasEmJogo(Cor.Branca).Count == 2)
+            {
+                int aux = 0;
+                int Cor1 = 0;
+                int Cor2 = 0;
+                List<Peca> bispos = new List<Peca>();
+                foreach (Peca p in PecasEmJogo(Cor.Branca))
+                {
+                    if (p is Rei)
+                    {
+                        aux++;
+                    }
+                    if (p is Bispo)
+                    {
+                        aux++;
+                        bispos.Add(p);
+                    }
+                }
+                if (aux == 2)
+                {
+                    foreach (Peca p in PecasEmJogo(Cor.Preta))
+                    {
+                        if (p is Rei)
+                        {
+                            aux++;
+                        }
+                        if (p is Bispo) 
+                        {
+                            aux++;
+                            bispos.Add(p);
+                        }
+                    }
+                }
+                if (bispos.Count == 2)
+                {
+                    foreach (Peca b in bispos)
+                    {
+                        if ((b.Pos.Linha % 2 == 0 && b.Pos.Coluna % 2 == 0) || (b.Pos.Linha % 2 == 1 && b.Pos.Coluna % 2 == 1)) 
+                        {
+                            Cor1++;
+                        }
+                        else
+                        {
+                            Cor2++;
+                        }
+                    }
+                }
+                return aux == 4 && (Cor1 == 2) || (Cor2 == 2);
+            }
+            //Rei vs Rei + 2 Cavalos
+            else if (pecasEmJogo.Count == 4)
+            {
+                int aux = 0;
+                foreach (Peca p in PecasEmJogo(Cor.Branca))
+                {
+                    if (p is Rei)
+                    {
+                        aux++;
+                    }
+                    if (p is Cavalo)
+                    {
+                        aux++;
+                    }
+                }
+                if (aux == 1 || aux == 3)
+                {
+                    foreach (Peca p in PecasEmJogo(Cor.Preta))
+                    {
+                        if (p is Rei)
+                        {
+                            aux++;
+                        }
+                        if (p is Cavalo)
+                        {
+                            aux++;
+                        }
+                    }
+                }
+                return aux == 4;
+            }
+            else { return false; }
+        }
+
         public void PromoverPeca(char promoverPecaPara)
         {
             Peca p = PecaPromovida;
@@ -352,7 +472,7 @@ namespace XadrezConsole.xadrez
         }
 
         private void AdicionarPecas()
-        {
+        { /*
             AdicionarNovaPeca('a', 1, new Torre(Cor.Branca, Tab));
             AdicionarNovaPeca('b', 1, new Cavalo(Cor.Branca, Tab));
             AdicionarNovaPeca('c', 1, new Bispo(Cor.Branca, Tab));
@@ -386,6 +506,12 @@ namespace XadrezConsole.xadrez
             AdicionarNovaPeca('f', 7, new Peao(Cor.Preta, Tab, this));
             AdicionarNovaPeca('g', 7, new Peao(Cor.Preta, Tab, this));
             AdicionarNovaPeca('h', 7, new Peao(Cor.Preta, Tab, this));
+            */
+            AdicionarNovaPeca('e', 1, new Rei(Cor.Branca, Tab, this));
+            AdicionarNovaPeca('e', 8, new Rei(Cor.Preta, Tab, this));
+            AdicionarNovaPeca('d', 2, new Peao(Cor.Preta, Tab, this));
+            AdicionarNovaPeca('a', 8, new Cavalo(Cor.Preta, Tab));
+            AdicionarNovaPeca('a', 7, new Cavalo(Cor.Preta, Tab));
         }
     }
 }

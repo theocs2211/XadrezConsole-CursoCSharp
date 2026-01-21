@@ -57,8 +57,15 @@ namespace XadrezConsole
             }
             else
             {
-                Console.WriteLine("XEQUEMATE!");
-                Console.WriteLine("Vencedor: " + partida.JogadorAtual);
+                if (partida.Empate)
+                {
+                    Console.WriteLine("EMPATE!");
+                }
+                else if (partida.XequeMate)
+                {
+                    Console.WriteLine("XEQUEMATE!");
+                    Console.WriteLine("Vencedor: " + partida.JogadorAtual);
+                }
             }
         }
         public static void ImprimirPartida(PartidaDeXadrez partida, bool[,] posicoesPossiveis)
@@ -78,8 +85,15 @@ namespace XadrezConsole
             }
             else
             {
-                Console.WriteLine("XEQUEMATE!");
-                Console.WriteLine("Vencedor: " + partida.JogadorAtual);
+                if (partida.Empate) 
+                {
+                    Console.WriteLine("EMPATE!");
+                }
+                else if (partida.XequeMate)
+                {
+                    Console.WriteLine("XEQUEMATE!");
+                    Console.WriteLine("Vencedor: " + partida.JogadorAtual);
+                }
             }
         }
 
