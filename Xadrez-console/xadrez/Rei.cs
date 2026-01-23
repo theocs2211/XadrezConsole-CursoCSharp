@@ -18,7 +18,11 @@ namespace XadrezConsole.xadrez
 
         private bool TesteTorreParaRoque(Posicao pos) 
         {
-            Peca p = Tab.Peca(pos);
+            Peca p = null;
+            if (Tab.PosicaoValida(pos))
+            {
+                p = Tab.Peca(pos);
+            }
             return p != null && p.QteMovimentos == 0 && p is Torre && p.Cor == this.Cor;
         }
 

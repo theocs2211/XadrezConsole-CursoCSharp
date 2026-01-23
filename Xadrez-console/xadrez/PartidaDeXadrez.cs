@@ -1,4 +1,5 @@
-﻿using XadrezConsole.tabuleiro;
+﻿using System.Runtime.ConstrainedExecution;
+using XadrezConsole.tabuleiro;
 
 namespace XadrezConsole.xadrez
 {
@@ -323,7 +324,11 @@ namespace XadrezConsole.xadrez
 
         public bool EstaEmpatado()
         {
-            //Material insuficiente
+            return MaterialInsuficiente() || Afogamento();
+        }
+
+        private bool MaterialInsuficiente()
+        {
             HashSet<Peca> pecasEmJogo = PecasEmJogo(Cor.Branca);
             pecasEmJogo.UnionWith(PecasEmJogo(Cor.Preta));
             //Rei vs Rei
@@ -375,7 +380,7 @@ namespace XadrezConsole.xadrez
                         {
                             aux++;
                         }
-                        if (p is Bispo) 
+                        if (p is Bispo)
                         {
                             aux++;
                             bispos.Add(p);
@@ -386,7 +391,7 @@ namespace XadrezConsole.xadrez
                 {
                     foreach (Peca b in bispos)
                     {
-                        if ((b.Pos.Linha % 2 == 0 && b.Pos.Coluna % 2 == 0) || (b.Pos.Linha % 2 == 1 && b.Pos.Coluna % 2 == 1)) 
+                        if ((b.Pos.Linha % 2 == 0 && b.Pos.Coluna % 2 == 0) || (b.Pos.Linha % 2 == 1 && b.Pos.Coluna % 2 == 1))
                         {
                             Cor1++;
                         }
@@ -429,9 +434,51 @@ namespace XadrezConsole.xadrez
                 }
                 return aux == 4;
             }
-            else { return false; }
+            else 
+            { 
+                return false; 
+            }
         }
+        
 
+        private bool Afogamento()
+        {
+            int auxAfogamento = 0;
+            for (int n = 0; n < 2; n++)
+            {
+                int auxAfogamento2 = 0;
+                Cor cor;
+                if (n == 0)
+                { cor = Cor.Branca; }
+                else { cor = Cor.Preta; }
+
+                foreach (Peca p in PecasEmJogo(cor))
+                {
+                    bool[,] mat = p.MovimentosPossiveis();
+                    for (int i = 0; i < Tab.Linhas; i++)
+                    {
+                        for (int j = 0; j < Tab.Colunas; j++)
+                        {
+                            if (mat[i, j])
+                            {
+                                Posicao origem = p.Pos;
+                                Posicao destino = new Posicao(i, j);
+                                Peca pecaCapturada = ExecutarMovimento(origem, destino);
+                                bool testeXeque = EstaEmXeque(cor);
+                                DesfazMovimento(origem, destino, pecaCapturada);
+                                if (!testeXeque)
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            return true;
+        }
+        
         public void PromoverPeca(char promoverPecaPara)
         {
             Peca p = PecaPromovida;
@@ -507,11 +554,11 @@ namespace XadrezConsole.xadrez
             AdicionarNovaPeca('g', 7, new Peao(Cor.Preta, Tab, this));
             AdicionarNovaPeca('h', 7, new Peao(Cor.Preta, Tab, this));
             */
-            AdicionarNovaPeca('e', 1, new Rei(Cor.Branca, Tab, this));
-            AdicionarNovaPeca('e', 8, new Rei(Cor.Preta, Tab, this));
-            AdicionarNovaPeca('d', 2, new Peao(Cor.Preta, Tab, this));
-            AdicionarNovaPeca('a', 8, new Cavalo(Cor.Preta, Tab));
-            AdicionarNovaPeca('a', 7, new Cavalo(Cor.Preta, Tab));
+            AdicionarNovaPeca('h', 1, new Rei(Cor.Branca, Tab, this));
+            AdicionarNovaPeca('g', 4, new Rei(Cor.Preta, Tab, this));
+            AdicionarNovaPeca('h', 5, new Peao(Cor.Preta, Tab, this));
+            AdicionarNovaPeca('f', 3, new Cavalo(Cor.Preta, Tab));
+            AdicionarNovaPeca('g', 2, new Peao(Cor.Branca, Tab, this));
         }
     }
 }

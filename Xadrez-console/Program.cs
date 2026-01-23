@@ -55,7 +55,7 @@ namespace XadrezConsole
                     {
                         Console.WriteLine("Posição invalida!");
                         Console.ReadKey();
-                    }
+                    } 
                 }
                 Console.Clear();
                 Tela.ImprimirPartida(partida);
